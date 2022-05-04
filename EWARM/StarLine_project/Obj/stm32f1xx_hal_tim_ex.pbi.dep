@@ -1,0 +1,39 @@
+stm32f1xx_hal_tim_ex.pbi: \
+  C:\Documents\CubeMX\StarLine_project\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_tim_ex.c \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Core/Inc\stm32f1xx_hal_conf.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_rcc.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/CMSIS/Device/ST/STM32F1xx/Include\stm32f1xx.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/CMSIS/Include\core_cm3.h \
+  E:\Program\ Files\IAR\arm\inc\c\stdint.h \
+  E:\Program\ Files\IAR\arm\inc\c\ycheck.h \
+  E:\Program\ Files\IAR\arm\inc\c\yvals.h \
+  E:\Program\ Files\IAR\arm\inc\c\DLib_Defaults.h \
+  E:\Program\ Files\IAR\arm\inc\c\DLib_Config_Full.h \
+  E:\Program\ Files\IAR\arm\inc\c\DLib_Product.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/CMSIS/Include/cmsis_version.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/CMSIS/Include/cmsis_compiler.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/CMSIS/Include\cmsis_iccarm.h \
+  E:\Program\ Files\IAR\arm\inc\c\iccarm_builtin.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h \
+  E:\Program\ Files\IAR\arm\inc\c\stddef.h \
+  E:\Program\ Files\IAR\arm\inc\c\ysizet.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_gpio.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_exti.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_dma.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma_ex.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_cortex.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_adc.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_adc_ex.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_crc.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_flash.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_pwr.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_tim.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
+  C:\Documents\CubeMX\StarLine_project\EWARM/../Drivers/STM32F1xx_HAL_Driver/Inc\stm32f1xx_hal_uart.h
