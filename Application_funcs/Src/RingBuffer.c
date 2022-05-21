@@ -2,9 +2,11 @@
 #include "RingBuffer.h"
 
 
-void InitRB(RingBuff_t* buff){
+int8_t InitRB(RingBuff_t* buff){
+  if((SIZE_BUFFER > 256) || (SIZE_BUFFER < 1)) return -1;
   buff->InputItem = 0;
   buff->NumOfItems = 0;
+  return 1;
 }
 
 void PutRBValue(RingBuff_t* buff, uint8_t val){
@@ -17,9 +19,9 @@ void PutRBValue(RingBuff_t* buff, uint8_t val){
 
 int8_t GetRBValue(RingBuff_t* buff){
   uint8_t val;
-  int16_t OutputItem;
+  int16_t OutputItem = buff->InputItem;  // сохранение в переменную выходного индекса входного
   // сохранение номера искомого элемента
-  OutputItem = buff->InputItem - buff->NumOfItems;
+  OutputItem -= buff->NumOfItems;  // вычитание кол-ва эл-тов (отдельно из-за volatile)
   if(OutputItem < 0)  // если номер отрицательный
     OutputItem += SIZE_BUFFER;
   val = buff->buffer[OutputItem];
@@ -40,6 +42,3 @@ void FillRB(RingBuff_t* buff, uint8_t* src, uint8_t size){
     PutRBValue(buff, src[i]);
   }
 }
-
-
-

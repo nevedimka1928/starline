@@ -40,7 +40,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
- ADC_HandleTypeDef hadc1;
+ADC_HandleTypeDef hadc1;
 
 CRC_HandleTypeDef hcrc;
 
@@ -51,9 +51,6 @@ UART_HandleTypeDef huart1;
 /* USER CODE BEGIN PV */
 RingBuff_t RingBuffer;  // объявление структуры кольцевого буфера
 volatile uint8_t FlagEnded_Tx = 1;
-//uint8_t tmpNums;
-//int8_t RBValue;
-//uint8_t RBValue2;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -110,7 +107,10 @@ int main(void)
   
   init_buff();  // инициализация случайного времени и случайного размера
   fill_buff(rand_size);  // генерация случайных данных
-  InitRB(&RingBuffer);  // инициализация кольцевого буфера
+  if(InitRB(&RingBuffer) == -1)  // инициализация кольцевого буфера
+  {
+    Error_Handler();
+  }
   FillRB(&RingBuffer, rand_buff, rand_size);  // заполнение кольцевого буфера
   Tim_Period_Update();  // обновление периода таймера в соответствии с rand_time
   __HAL_TIM_CLEAR_FLAG(&htim2, TIM_SR_UIF); // очищаем флаг прерывания
@@ -132,7 +132,6 @@ int main(void)
         HAL_UART_Transmit_IT(&huart1, &tmpNums, 1);  // передача 2го байта от кол-ва 6ок
       }
       else{  // если байт по модулю больше 10
-        
         uint8_t RBValue2 = (uint8_t)RBValue;  // преобразовать в тип передачи по ЮАРТ
         while(FlagEnded_Tx == 0){}
         FlagEnded_Tx = 0;

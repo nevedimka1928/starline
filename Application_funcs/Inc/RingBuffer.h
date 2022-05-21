@@ -3,32 +3,56 @@
 #ifndef __RINGBUFFER_H
 #define __RINGBUFFER_H
 
-#define SIZE_BUFFER 256
+#define SIZE_BUFFER 255
 
 typedef struct 
 {
-  uint8_t buffer[SIZE_BUFFER];
-  uint8_t InputItem;
-  uint16_t NumOfItems;
-} RingBuff_t;
+  uint8_t buffer[SIZE_BUFFER];  // массив значений
+  uint8_t InputItem;  // индекс элемента для нового значения
+  uint16_t NumOfItems;  // число эл-тов
+} volatile RingBuff_t;
 
+/**
+  * @brief  инициализация кольцевого буфера
+  * @param  buff: указатель на структуру кольцевого буфера (КБ)
+  */
+int8_t InitRB(RingBuff_t* buff);
 
-void InitRB(RingBuff_t* buff);  // инициализация кольцевого буфера
+/**
+  * @brief  Добавление байта в буфер
+  * @param  buff: указатель на структуру кольцевого буфера
+  * @param  val: новое значение в КБ
+  */
+void PutRBValue(RingBuff_t* buff, uint8_t val);
 
-void PutRBValue(RingBuff_t* buff, uint8_t val);  // Добавление байта в буфер 
+/**
+  * @brief  Извлечение байта из буфера
+  * @param  buff: указатель на структуру кольцевого буфера
+  * @retval значение, забираемое из КБ
+  */
+int8_t GetRBValue(RingBuff_t* buff);
 
-int8_t GetRBValue(RingBuff_t* buff);  // Извлечение байта из буфера
-
-// Получение данных о количестве свободных байт в буфере
+/**
+  * @brief  Получение данных о количестве свободных байт в буфере
+  * @param  buff: указатель на структуру кольцевого буфера
+  * @retval число свободных эл-тов в КБ
+  */
 uint8_t NumOfRBFreeItems(RingBuff_t *buff);
 
-// Получение данных о количестве байт в буфере
+/**
+  * @brief  Получение данных о количестве байт в буфере
+  * @param  buff: указатель на структуру кольцевого буфера
+  * @retval число эл-тов в КБ
+  */
 uint8_t NumOfRBItems(RingBuff_t *buff);
 
-// заполнение кольцевого буфера на основе сгенерированного массива случайных чисел
+/**
+  * @brief  Заполнение кольцевого буфера на основе сгенерированного массива случайных чисел
+  * @param  buff: указатель на структуру кольцевого буфера
+  * @param  src: источник новых данных для КБ
+  * @param  size: длина новых данных для КБ
+  */
+// 
 void FillRB(RingBuff_t* buff, uint8_t* src, uint8_t size);
-
-
-
 
 #endif /* __RINGBUFFER_H */
