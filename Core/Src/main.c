@@ -107,8 +107,7 @@ int main(void)
   
   init_buff();  // инициализация случайного времени и случайного размера
   fill_buff(rand_size);  // генерация случайных данных
-  if(InitRB(&RingBuffer) == -1)  // инициализация кольцевого буфера
-  {
+  if(InitRB(&RingBuffer) == -1){  // инициализация кольцевого буфера
     Error_Handler();
   }
   FillRB(&RingBuffer, rand_buff, rand_size);  // заполнение кольцевого буфера
@@ -376,6 +375,10 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+/**
+  * @brief  Обновление периода таймера
+  * @retval None
+  */
 void Tim_Period_Update(void){
   // новое значение периода основано на умножении 1мс на случайный коэффициент периода
   htim2.Init.Period = rand_time * TIM_PERIOD_1_MS - 1;  

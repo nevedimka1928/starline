@@ -246,11 +246,20 @@ void USART1_IRQHandler(void)
 
   /* USER CODE END USART1_IRQn 1 */
 }
+/* USER CODE BEGIN 1 */
+/**
+  * @brief callback прерывания отправки UART
+  * @param  huart: указатель на структуру UART
+  */
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
   FlagEnded_Tx = 1;  // установка флага успешной отправки байта по ЮАРТ
 }
-/* USER CODE BEGIN 1 */
+
+/**
+  * @brief callback прерывания таймера
+  * @param  htim: указатель на структуру таймера
+  */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   HAL_TIM_Base_Stop_IT(&htim2);  // остановка прерываний таймера
@@ -258,7 +267,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   
   init_buff();  // инициализация случайного времени и размера буффера
   fill_buff(rand_size);  // генерация случайных чисел
-  FillRB(&RingBuffer, rand_buff, rand_size);  // заполнение кольцевого буфера
+  if(FillRB(&RingBuffer, rand_buff, rand_size) == -1){;  // заполнение кольцевого буфера
+      Error_Handler();
+  }
   Tim_Period_Update();  // обновление периода таймера в соответствии с rand_time
   
   HAL_TIM_Base_Init(&htim2);  // инициализация структуры работы таймера

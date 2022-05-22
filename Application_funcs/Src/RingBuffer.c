@@ -12,12 +12,13 @@ int8_t InitRB(RingBuff_t* buff){
 void PutRBValue(RingBuff_t* buff, uint8_t val){
   buff->buffer[buff->InputItem] = val;
   buff->InputItem++;
-  buff->NumOfItems++;
-  if(buff->NumOfItems > SIZE_BUFFER)
-    buff->NumOfItems = SIZE_BUFFER;
+  if(buff->InputItem >= SIZE_BUFFER)
+    buff->InputItem = 0;
+  if(buff->NumOfItems < SIZE_BUFFER)
+    buff->NumOfItems++;
 }
 
-int8_t GetRBValue(RingBuff_t* buff){
+uint8_t GetRBValue(RingBuff_t* buff){
   uint8_t val;
   int16_t OutputItem = buff->InputItem;  // сохранение в переменную выходного индекса входного
   // сохранение номера искомого элемента
@@ -37,8 +38,10 @@ uint8_t NumOfRBItems(RingBuff_t *buff){
   return (buff->NumOfItems);
 }
 
-void FillRB(RingBuff_t* buff, uint8_t* src, uint8_t size){
+int8_t FillRB(RingBuff_t* buff, uint8_t* src, uint8_t size){
+  if((size == 0) || (size > 50)) return -1;
   for(uint8_t i = 0; i < size; i++){
     PutRBValue(buff, src[i]);
   }
+  return 1;
 }

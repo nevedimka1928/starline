@@ -15,6 +15,7 @@ typedef struct
 /**
   * @brief  инициализация кольцевого буфера
   * @param  buff: указатель на структуру кольцевого буфера (КБ)
+  * @retval значение резульата выполнения операции инициализации
   */
 int8_t InitRB(RingBuff_t* buff);
 
@@ -30,7 +31,7 @@ void PutRBValue(RingBuff_t* buff, uint8_t val);
   * @param  buff: указатель на структуру кольцевого буфера
   * @retval значение, забираемое из КБ
   */
-int8_t GetRBValue(RingBuff_t* buff);
+uint8_t GetRBValue(RingBuff_t* buff);
 
 /**
   * @brief  Получение данных о количестве свободных байт в буфере
@@ -51,8 +52,9 @@ uint8_t NumOfRBItems(RingBuff_t *buff);
   * @param  buff: указатель на структуру кольцевого буфера
   * @param  src: источник новых данных для КБ
   * @param  size: длина новых данных для КБ
+  * @retval статус корректной работы ("-1" - ошибка, "1" - все хорошо)
   */
 // 
-void FillRB(RingBuff_t* buff, uint8_t* src, uint8_t size);
+int8_t FillRB(RingBuff_t* buff, uint8_t* src, uint8_t size);
 
 #endif /* __RINGBUFFER_H */
