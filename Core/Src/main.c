@@ -123,8 +123,9 @@ int main(void)
     if(NumOfRBItems(&RingBuffer) != 0){  // если в кольцевом буфере есть байты
       int8_t RBValue = GetRBValue(&RingBuffer);  // взять и сохранить байт
       if((RBValue < 10) && (RBValue > -10)){    // если он по модулю меньше 10
-        if(RBValue < 0)  // если он отрицательный
+        if(RBValue < 0){  // если он отрицательный
           RBValue = -RBValue;  // сделать положительным
+        }
         while(FlagEnded_Tx == 0){}  // пока предыдущая отправка не закончится - крутиться в бесконечном цикле
         FlagEnded_Tx = 0;  // обнуление флага отправки по ЮАРТ
         uint8_t tmpNums = Counter6Nums(RBValue);  // подсчет шестерок

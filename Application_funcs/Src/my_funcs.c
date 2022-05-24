@@ -46,10 +46,12 @@ static uint32_t rand_gen(void){
   */
 static uint8_t conv256to50(uint8_t word){  // перевод числа от диапазона 0-255 в 1-50
   uint16_t tmp_word = (1 + (uint16_t)word)*50;
-  if((tmp_word % 256) > 0)  // если есть остаток
+  if((tmp_word % 256) > 0){  // если есть остаток
     return ((uint8_t)((tmp_word / 256) + 1));  // вычислить и прибавить 1
-  else
+  }
+  else{
     return ((uint8_t)(tmp_word / 256));
+  }
 }
 
 /* Exported functions --------------------------------------------------------*/
@@ -63,13 +65,14 @@ void init_buff(void){
 }
 
 void fill_buff(uint8_t size){
-  if(size <= 2) // если размер не больше уже заполненного
+  if(size <= 2){ // если размер не больше уже заполненного
     return;     // не заполнять
-  
+  }
   for (uint8_t i = 2; i < size; ++i){  // цикл по эл-там буфера
     static uint32_t temp_rnd;
-    if((i + 2)%4 == 0)  // при остатке от деления (смещённого на 2 индекса) равного 0
+    if((i + 2)%4 == 0){  // при остатке от деления (смещённого на 2 индекса) равного 0
       temp_rnd = rand_gen();  // обновление случайного числа
+    }
     // заполнение эл-та массива в зависимости от его номера
     rand_buff[i] = *((uint8_t*)&temp_rnd + ((i + 2) % 4));
   }
@@ -88,8 +91,9 @@ uint32_t BinaryPower(uint32_t base, uint8_t degree){
 }
 
 uint8_t Counter6Nums(uint8_t Y){
-  if(Y == 0)
+  if(Y == 0){
     return 0;
+  }
   uint32_t ret;
   ret = Y * BinaryPower(10, (Y-1));  // Количество цифр в числе = Y*(10**(Y-1))
   return (*((uint8_t*)&ret + 2));  // возвращение "второго значимого байта"

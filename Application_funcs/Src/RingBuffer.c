@@ -12,10 +12,12 @@ int8_t InitRB(RingBuff_t* buff){
 void PutRBValue(RingBuff_t* buff, uint8_t val){
   buff->buffer[buff->InputItem] = val;
   buff->InputItem++;
-  if(buff->InputItem >= SIZE_BUFFER)
+  if(buff->InputItem >= SIZE_BUFFER){
     buff->InputItem = 0;
-  if(buff->NumOfItems < SIZE_BUFFER)
+  }
+  if(buff->NumOfItems < SIZE_BUFFER){
     buff->NumOfItems++;
+  }
 }
 
 uint8_t GetRBValue(RingBuff_t* buff){
