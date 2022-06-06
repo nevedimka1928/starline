@@ -3,7 +3,6 @@
 
 extern ADC_HandleTypeDef hadc1;
 extern CRC_HandleTypeDef hcrc;
-extern const uint32_t NumOfHouses;
 volatile uint8_t rand_buff[50];
 volatile uint8_t rand_time;
 volatile uint8_t rand_size;
@@ -19,7 +18,7 @@ static uint8_t conv256to50(uint8_t word);
   * @retval 32-битное случайное число шума АЦП
   */
 static uint32_t adc_noise(void){
-//  while(HAL_ADC_PollForConversion (&hadc1, 10) == HAL_ERROR){}
+  while(HAL_ADC_PollForConversion (&hadc1, 10) == HAL_ERROR){}  // ожидание окончания преобразования
   uint32_t noise = 0;
   for (uint8_t i = 0; i < 16; i++){  // заполнение 32 бит
     HAL_ADC_Start (&hadc1);  // запуск АЦП

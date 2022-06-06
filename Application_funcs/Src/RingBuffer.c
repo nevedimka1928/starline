@@ -1,49 +1,80 @@
 #include "stm32f1xx_hal.h"
 #include "RingBuffer.h"
+#include <stdlib.h>
 
-
-int8_t InitRB(RingBuff_t* buff){
-  if((SIZE_BUFFER > 256) || (SIZE_BUFFER < 1)) return -1;
-  buff->InputItem = 0;
-  buff->NumOfItems = 0;
-  return 1;
+RingBuff_t* InitRB(int16_t capacity){
+  if((capacity > 256) || (capacity < 1)) {return NULL;}
+  
+  uint8_t* start_mem = malloc(capacity * sizeof(uint8_t));
+  if(start_mem == NULL) {return NULL;}
+  
+  RingBuff_t* new_RB = malloc(sizeof(RingBuff_t));
+  if(new_RB == NULL){
+    free(start_mem); 
+    return NULL;
+  }
+  
+  new_RB->InputItem = start_mem;
+  new_RB->head = start_mem;
+  new_RB->NumOfItems = 0;
+  new_RB->length = capacity;
+  return new_RB;
 }
 
-void PutRBValue(RingBuff_t* buff, uint8_t val){
-  buff->buffer[buff->InputItem] = val;
+void deleteRingBuffer(RingBuff_t* buff){
+  if(buff == NULL) return;
+  free(buff->head);
+  free(buff);
+}
+
+int8_t PutRBValue(RingBuff_t* buff, uint8_t val){
+  if(buff == NULL) return RB_ERR_NULL;
+  
+  *(buff->InputItem) = val;
   buff->InputItem++;
-  if(buff->InputItem >= SIZE_BUFFER){
-    buff->InputItem = 0;
+  if(buff->InputItem >= (buff->head + buff->length)){
+    buff->InputItem = buff->head;
   }
-  if(buff->NumOfItems < SIZE_BUFFER){
+  if(buff->NumOfItems < buff->length){
     buff->NumOfItems++;
   }
+  return RB_OK;
 }
 
-uint8_t GetRBValue(RingBuff_t* buff){
-  uint8_t val;
-  int16_t OutputItem = buff->InputItem;  // сохранение в переменную выходного индекса входного
+int8_t GetRBValue(RingBuff_t* buff, uint8_t* readed_val){
+  if(buff == NULL) return RB_ERR_NULL;
+  if(buff->NumOfItems == 0) return RB_ERR_EMPTY;
+  
+  uint8_t volatile* OutputItem = buff->InputItem;  // сохранение в переменную выходного индекса входного
   // сохранение номера искомого элемента
   OutputItem -= buff->NumOfItems;  // вычитание кол-ва эл-тов (отдельно из-за volatile)
-  if(OutputItem < 0)  // если номер отрицательный
-    OutputItem += SIZE_BUFFER;
-  val = buff->buffer[OutputItem];
+  if(OutputItem < buff->head)  // если номер отрицательный
+    OutputItem += buff->length;
+  *readed_val = *OutputItem;
   buff->NumOfItems--;
-  return val;
+  return RB_OK;
 }
 
-uint8_t NumOfRBFreeItems(RingBuff_t *buff){
-  return (SIZE_BUFFER - buff->NumOfItems);
+int8_t NumOfRBFreeItems(RingBuff_t *buff, uint8_t* readed_val){
+  if(buff == NULL) return RB_ERR_NULL;
+  *readed_val = buff->length - buff->NumOfItems;
+  return RB_OK;
 }
 
-uint8_t NumOfRBItems(RingBuff_t *buff){
-  return (buff->NumOfItems);
+int8_t NumOfRBItems(RingBuff_t *buff, uint8_t* readed_val){
+  if(buff == NULL) return RB_ERR_NULL;
+  *readed_val = buff->NumOfItems;
+  return RB_OK;
 }
 
 int8_t FillRB(RingBuff_t* buff, uint8_t* src, uint8_t size){
-  if((size == 0) || (size > 50)) return -1;
+  if(buff == NULL) return RB_ERR_NULL;
+  if(src == NULL) return RB_ERR_NULL;
+  if((size == 0) || (size > 50)) return RB_ERR_EXCEEDANCE;
+  
   for(uint8_t i = 0; i < size; i++){
-    PutRBValue(buff, src[i]);
+    if(PutRBValue(buff, src[i]) != RB_OK)
+      return RB_ERR_COPY;
   }
-  return 1;
+  return RB_OK;
 }

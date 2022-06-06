@@ -49,7 +49,8 @@ TIM_HandleTypeDef htim2;
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
-RingBuff_t RingBuffer;  // объявление структуры кольцевого буфера
+RingBuff_t* RingBuffer;  // объявление структуры кольцевого буфера
+uint8_t* returned_val;  // возвращаемое из функции значение
 volatile uint8_t FlagEnded_Tx = 1;
 /* USER CODE END PV */
 
@@ -107,10 +108,13 @@ int main(void)
   
   init_buff();  // инициализация случайного времени и случайного размера
   fill_buff(rand_size);  // генерация случайных данных
-  if(InitRB(&RingBuffer) == -1){  // инициализация кольцевого буфера
+  
+  if((RingBuffer = InitRB(255)) == NULL){  // инициализация кольцевого буфера
     Error_Handler();
   }
-  FillRB(&RingBuffer, rand_buff, rand_size);  // заполнение кольцевого буфера
+  if(FillRB(RingBuffer, rand_buff, rand_size) != RB_OK){  // заполнение кольцевого буфера
+    Error_Handler();
+  }
   Tim_Period_Update();  // обновление периода таймера в соответствии с rand_time
   __HAL_TIM_CLEAR_FLAG(&htim2, TIM_SR_UIF); // очищаем флаг прерывания
   HAL_TIM_Base_Start_IT(&htim2);  // запуск таймера с прерыванием
@@ -120,8 +124,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    if(NumOfRBItems(&RingBuffer) != 0){  // если в кольцевом буфере есть байты
-      int8_t RBValue = GetRBValue(&RingBuffer);  // взять и сохранить байт
+    int8_t RB_Err_Status;
+    if(RB_Err_Status = GetRBValue(RingBuffer, returned_val)){   // если в кольцевом буфере есть байты
+      int8_t RBValue = *returned_val;           // взять и сохранить байт
       if((RBValue < 10) && (RBValue > -10)){    // если он по модулю меньше 10
         if(RBValue < 0){  // если он отрицательный
           RBValue = -RBValue;  // сделать положительным
@@ -137,6 +142,9 @@ int main(void)
         FlagEnded_Tx = 0;
         HAL_UART_Transmit_IT(&huart1, &RBValue2, 1);  // передать байт
       }
+    }
+    else if(RB_Err_Status == RB_ERR_NULL){  // если ошибка в аргументе
+      Error_Handler();
     }
     /* USER CODE END WHILE */
 
@@ -397,6 +405,7 @@ void Tim_Period_Update(void){
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
+  deleteRingBuffer(RingBuffer);   // удалить динамическую память
   /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
   while (1)
