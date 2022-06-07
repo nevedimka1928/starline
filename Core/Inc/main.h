@@ -46,9 +46,9 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-extern uint8_t rand_buff[50];
-extern uint8_t rand_time;
-extern uint8_t rand_size;
+// extern uint8_t rand_buff[50];
+// extern uint8_t rand_time;
+// extern uint8_t rand_size;
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/

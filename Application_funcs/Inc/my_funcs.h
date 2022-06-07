@@ -3,17 +3,28 @@
 #ifndef __MY_FUNCS_H
 #define __MY_FUNCS_H
 
+typedef struct 
+{
+  volatile uint8_t rand_buff[50];
+  volatile uint8_t rand_time;
+  volatile uint8_t rand_size;
+} RandBuff_t;
 
 /**
   * @brief  создание случайного времени, размера буффера и заполнение первых 2х значений массива
+  * @param  random_struct: указатель на структуру RandBuff_t случайных значений
+  * @param  hadc: указатель на структуру ADC
+  * @param  hadc: указатель на структуру CRC
   */
-void init_buff(void);
+void init_buff(RandBuff_t* random_struct, ADC_HandleTypeDef hadc, CRC_HandleTypeDef hcrc);
 
 /**
   * @brief  заполнение оставшейся (от 2-го эл-та) части массива случайных данных
-  * @param  size: общее число случайных значений
+  * @param  random_struct: указатель на структуру RandBuff_t случайных значений
+  * @param  hadc: указатель на структуру ADC
+  * @param  hadc: указатель на структуру CRC
   */
-void fill_buff(uint8_t size);
+void fill_buff(RandBuff_t* random_struct, ADC_HandleTypeDef hadc, CRC_HandleTypeDef hcrc);
 
 /**
   * @brief  возведение в степень

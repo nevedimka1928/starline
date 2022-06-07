@@ -60,8 +60,11 @@
 extern TIM_HandleTypeDef htim2;
 extern UART_HandleTypeDef huart1;
 /* USER CODE BEGIN EV */
-extern RingBuff_t RingBuffer;
+extern RingBuff_t* RingBuffer;
+extern RandBuff_t* random_buffer;
 extern uint8_t FlagEnded_Tx;
+extern ADC_HandleTypeDef hadc1;
+extern CRC_HandleTypeDef hcrc;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -265,9 +268,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   HAL_TIM_Base_Stop_IT(&htim2);  // остановка прерываний таймера
   HAL_TIM_Base_DeInit(&htim2);  // деинициализация структуры работы таймера
   
-  init_buff();  // инициализация случайного времени и размера буффера
-  fill_buff(rand_size);  // генерация случайных чисел
-  if(FillRB(&RingBuffer, rand_buff, rand_size) == -1){;  // заполнение кольцевого буфера
+  init_buff(random_buffer, hadc1, hcrc);  // инициализация случайного времени и размера буффера
+  fill_buff(random_buffer, hadc1, hcrc);  // генерация случайных чисел
+  if(FillRB(RingBuffer, random_buffer->rand_buff, random_buffer->rand_size) == -1){;  // заполнение кольцевого буфера
       Error_Handler();
   }
   Tim_Period_Update();  // обновление периода таймера в соответствии с rand_time

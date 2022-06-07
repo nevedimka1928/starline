@@ -50,8 +50,12 @@ UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
 RingBuff_t* RingBuffer;  // объявление структуры кольцевого буфера
+RandBuff_t* random_buffer;      // объявление структуры случайных значений
 uint8_t* returned_val;  // возвращаемое из функции значение
 volatile uint8_t FlagEnded_Tx = 1;
+// volatile uint8_t rand_buff[50];
+// volatile uint8_t rand_time;
+// volatile uint8_t rand_size;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -106,13 +110,14 @@ int main(void)
   HAL_SuspendTick();     // SysTick interrupt off
   HAL_PWR_EnterSLEEPMode(PWR_LOWPOWERREGULATOR_ON, PWR_SLEEPENTRY_WFI); // to sleep
   
-  init_buff();  // инициализация случайного времени и случайного размера
-  fill_buff(rand_size);  // генерация случайных данных
+  
+  init_buff(random_buffer, hadc1, hcrc);  // инициализация случайного времени и случайного размера
+  fill_buff(random_buffer, hadc1, hcrc);  // генерация случайных данных
   
   if((RingBuffer = InitRB(255)) == NULL){  // инициализация кольцевого буфера
     Error_Handler();
   }
-  if(FillRB(RingBuffer, rand_buff, rand_size) != RB_OK){  // заполнение кольцевого буфера
+  if(FillRB(RingBuffer, random_buffer->rand_buff, random_buffer->rand_size) != RB_OK){  // заполнение кольцевого буфера
     Error_Handler();
   }
   Tim_Period_Update();  // обновление периода таймера в соответствии с rand_time
@@ -390,7 +395,7 @@ static void MX_GPIO_Init(void)
   */
 void Tim_Period_Update(void){
   // новое значение периода основано на умножении 1мс на случайный коэффициент периода
-  htim2.Init.Period = rand_time * TIM_PERIOD_1_MS - 1;  
+  htim2.Init.Period = random_buffer->rand_time * TIM_PERIOD_1_MS - 1;  
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
   {
     Error_Handler();

@@ -71,7 +71,6 @@ int8_t NumOfRBItems(RingBuff_t *buff, uint8_t* readed_val);
   * @param  size: длина новых данных для КБ
   * @retval статус корректной работы
   */
-// 
-int8_t FillRB(RingBuff_t* buff, uint8_t* src, uint8_t size);
+int8_t FillRB(RingBuff_t* buff, volatile uint8_t* src, volatile uint8_t size);
 
 #endif /* __RINGBUFFER_H */

@@ -67,7 +67,7 @@ int8_t NumOfRBItems(RingBuff_t *buff, uint8_t* readed_val){
   return RB_OK;
 }
 
-int8_t FillRB(RingBuff_t* buff, uint8_t* src, uint8_t size){
+int8_t FillRB(RingBuff_t* buff, volatile uint8_t* src, volatile uint8_t size){
   if(buff == NULL) return RB_ERR_NULL;
   if(src == NULL) return RB_ERR_NULL;
   if((size == 0) || (size > 50)) return RB_ERR_EXCEEDANCE;
