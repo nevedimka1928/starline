@@ -36,17 +36,19 @@ void deleteRingBuffer(RingBuff_t* buff);
   * @brief  Добавление байта в буфер
   * @param  buff: указатель на структуру кольцевого буфера
   * @param  val: новое значение в КБ
+  * @param  access: указатель на переменную атомарного доступа к кольцевому буфферу
   * @retval статус выполнения функции
   */
-int8_t PutRBValue(RingBuff_t* buff, uint8_t val);
+int8_t PutRBValue(RingBuff_t* buff, uint8_t val, volatile uint8_t* access);
 
 /**
   * @brief  Извлечение байта из буфера
   * @param  buff: указатель на структуру кольцевого буфера
   * @param  readed_val: возвращаемое значение
+  * @param  access: указатель на переменную атомарного доступа к кольцевому буфферу
   * @retval статус выполнения функции
   */
-int8_t GetRBValue(RingBuff_t* buff, uint8_t* readed_val);
+int8_t GetRBValue(RingBuff_t* buff, uint8_t* readed_val, volatile uint8_t* access);
 
 /**
   * @brief  Получение данных о количестве свободных байт в буфере
@@ -69,8 +71,9 @@ int8_t NumOfRBItems(RingBuff_t *buff, uint8_t* readed_val);
   * @param  buff: указатель на структуру кольцевого буфера
   * @param  src: источник новых данных для КБ
   * @param  size: длина новых данных для КБ
+  * @param  access: указатель на переменную атомарного доступа к кольцевому буфферу
   * @retval статус корректной работы
   */
-int8_t FillRB(RingBuff_t* buff, volatile uint8_t* src, volatile uint8_t size);
+int8_t FillRB(RingBuff_t* buff, volatile uint8_t* src, volatile uint8_t size, volatile uint8_t* access);
 
 #endif /* __RINGBUFFER_H */

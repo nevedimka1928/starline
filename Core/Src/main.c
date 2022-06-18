@@ -52,7 +52,8 @@ UART_HandleTypeDef huart1;
 RingBuff_t* RingBuffer;  // объявление структуры кольцевого буфера
 RandBuff_t* random_buffer;      // объявление структуры случайных значений
 uint8_t* returned_val;  // возвращаемое из функции значение
-volatile uint8_t FlagEnded_Tx = 1;
+volatile uint8_t FlagEnded_Tx = 1;  // флаг отправки сообщения по UART
+volatile uint8_t* FlagRBAccess;  // флаг обеспечения атомарности доступа к кольцевому буфферу
 // volatile uint8_t rand_buff[50];
 // volatile uint8_t rand_time;
 // volatile uint8_t rand_size;
@@ -110,14 +111,14 @@ int main(void)
   HAL_SuspendTick();     // SysTick interrupt off
   HAL_PWR_EnterSLEEPMode(PWR_LOWPOWERREGULATOR_ON, PWR_SLEEPENTRY_WFI); // to sleep
   
-  
+  *FlagRBAccess = 1;  // инициализация разрешения доступа к кольцевому буфферу
   init_buff(random_buffer, hadc1, hcrc);  // инициализация случайного времени и случайного размера
   fill_buff(random_buffer, hadc1, hcrc);  // генерация случайных данных
   
   if((RingBuffer = InitRB(255)) == NULL){  // инициализация кольцевого буфера
     Error_Handler();
   }
-  if(FillRB(RingBuffer, random_buffer->rand_buff, random_buffer->rand_size) != RB_OK){  // заполнение кольцевого буфера
+  if(FillRB(RingBuffer, random_buffer->rand_buff, random_buffer->rand_size, FlagRBAccess) != RB_OK){  // заполнение кольцевого буфера
     Error_Handler();
   }
   Tim_Period_Update();  // обновление периода таймера в соответствии с rand_time
@@ -130,7 +131,7 @@ int main(void)
   while (1)
   {
     int8_t RB_Err_Status;
-    if(RB_Err_Status = GetRBValue(RingBuffer, returned_val)){   // если в кольцевом буфере есть байты
+    if(RB_Err_Status = GetRBValue(RingBuffer, returned_val, FlagRBAccess)){   // если в кольцевом буфере есть байты
       int8_t RBValue = *returned_val;           // взять и сохранить байт
       if((RBValue < 10) && (RBValue > -10)){    // если он по модулю меньше 10
         if(RBValue < 0){  // если он отрицательный
