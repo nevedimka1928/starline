@@ -1,8 +1,6 @@
 #include "stm32f1xx_hal.h"
 #include "my_funcs.h"
 
-// extern ADC_HandleTypeDef hadc1;
-// extern CRC_HandleTypeDef hcrc;
 volatile uint8_t rand_buff[50];
 volatile uint8_t rand_time;
 volatile uint8_t rand_size;

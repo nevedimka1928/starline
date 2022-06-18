@@ -62,8 +62,8 @@ extern UART_HandleTypeDef huart1;
 /* USER CODE BEGIN EV */
 extern RingBuff_t* RingBuffer;
 extern RandBuff_t* random_buffer;
-extern uint8_t FlagEnded_Tx;
-extern uint8_t* FlagRBAccess;;
+extern volatile uint8_t FlagEnded_Tx;
+extern volatile uint8_t* FlagRBAccess;;
 extern ADC_HandleTypeDef hadc1;
 extern CRC_HandleTypeDef hcrc;
 /* USER CODE END EV */

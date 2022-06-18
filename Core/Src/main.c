@@ -54,9 +54,6 @@ RandBuff_t* random_buffer;      // объявление структуры сл�
 uint8_t* returned_val;  // возвращаемое из функции значение
 volatile uint8_t FlagEnded_Tx = 1;  // флаг отправки сообщения по UART
 volatile uint8_t* FlagRBAccess;  // флаг обеспечения атомарности доступа к кольцевому буфферу
-// volatile uint8_t rand_buff[50];
-// volatile uint8_t rand_time;
-// volatile uint8_t rand_size;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
