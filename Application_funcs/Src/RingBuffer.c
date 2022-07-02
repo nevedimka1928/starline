@@ -29,6 +29,7 @@ void deleteRingBuffer(RingBuff_t* buff){
 
 int8_t PutRBValue(RingBuff_t* buff, uint8_t val){
   if(buff == NULL) return RB_ERR_NULL;
+  HAL_NVIC_DisableIRQ(TIM2_IRQn);
   *(buff->InputItem) = val;  // запись нового значения в КБ
   buff->InputItem++;  // инкремент позиции
   if(buff->InputItem >= (buff->head + buff->length)){
@@ -37,12 +38,14 @@ int8_t PutRBValue(RingBuff_t* buff, uint8_t val){
   if(buff->NumOfItems < buff->length){
     buff->NumOfItems++;  // инкремент кол-ва эл-тов
   }
+  HAL_NVIC_EnableIRQ(TIM2_IRQn);
   return RB_OK;
 }
 
 int8_t GetRBValue(RingBuff_t* buff, uint8_t* readed_val){
   if(buff == NULL) return RB_ERR_NULL;
   if(buff->NumOfItems == 0) return RB_ERR_EMPTY;  // ошибка пустого буффера
+  HAL_NVIC_DisableIRQ(TIM2_IRQn);
   uint8_t volatile* OutputItem = buff->InputItem;  // сохранение в переменную выходного индекса входного
   // сохранение номера искомого элемента
   OutputItem -= buff->NumOfItems;  // вычитание кол-ва эл-тов (отдельно из-за volatile)
@@ -50,6 +53,7 @@ int8_t GetRBValue(RingBuff_t* buff, uint8_t* readed_val){
     OutputItem += buff->length;  // смена позиции на конец памяти КБ
   *readed_val = *OutputItem;  // чтение значения
   buff->NumOfItems--;  // декремент кол-ва эл-тов
+  HAL_NVIC_EnableIRQ(TIM2_IRQn);
   return RB_OK;
 }
 

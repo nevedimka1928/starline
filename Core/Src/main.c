@@ -126,9 +126,7 @@ int main(void)
   while (1)
   {
     int8_t RB_Err_Status;
-    HAL_NVIC_DisableIRQ(TIM2_IRQn);
     RB_Err_Status = GetRBValue(RingBuffer, returned_val);
-    HAL_NVIC_EnableIRQ(TIM2_IRQn);
     if(RB_Err_Status){   // если в кольцевом буфере есть байты
       int8_t RBValue = *returned_val;           // взять и сохранить байт
       if((RBValue < 10) && (RBValue > -10)){    // если он по модулю меньше 10
